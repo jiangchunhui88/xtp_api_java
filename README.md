@@ -1,6 +1,6 @@
 # XTP JAVA API
 本项目是中泰证券XTP极速交易JAVA接口的开源实现，供客户在量化交易中使用JAVA接口快速接入XTP系统。
-中泰证券XTP是为股票交易而生的极速交易系统，延时<60微妙，为投资者提供极速交易、极速行情、Level2行情。
+中泰证券XTP是为股票交易而生的极速交易系统，为投资者提供极速交易、极速行情、Level2行情。
 
 如何使用：
 方式一：直接使用成品
@@ -31,4 +31,3 @@
 7）在量化交易java代码中引入xtpapi-1.1.18.13.jar，参考项目根目录下xtp_api_demo/src/main/java/com/zts/xtp/demo/Application.java的API使用demo
    以及src/test/java/com.zts.xtp/trade/TradeApiTest.java以及src/test/java/com.zts.xtp/quote/QuoteApiTest.java的单元测试中的用法
  
-JAVA API文档：

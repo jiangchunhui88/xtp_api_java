@@ -43,10 +43,27 @@
 #include <ostream>
 #include <sstream>
 #include <string>
-#if 1
-# include <unistd.h>
+
+#if defined(_MSC_VER) //add by jiangch 2019.3.4
+#include <io.h>
+#include <process.h>
+#else
+#include <unistd.h>
 #endif
 #include <vector>
+
+//add by jiangch，原因：vs2015中没有以下宏的定义
+#if defined(_MSC_VER)
+
+#ifndef __builtin_expect
+#define __builtin_expect(EXP, C)  (EXP)
+#endif 
+
+#ifndef __PRETTY_FUNCTION__
+#define __PRETTY_FUNCTION__  __FUNCTION__
+#endif 
+
+#endif // add end.
 
 #if defined(_MSC_VER)
 #define GLOG_MSVC_PUSH_DISABLE_WARNING(n) __pragma(warning(push)) \
@@ -82,7 +99,7 @@
 #include <inttypes.h>           // a third place for uint16_t or u_int16_t
 #endif
 
-#if 1
+#if 0
 #include <gflags/gflags.h>
 #endif
 
@@ -648,9 +665,14 @@ template <> GOOGLE_GLOG_DLL_DECL
 void MakeCheckOpValueString(std::ostream* os, const unsigned char& v);
 
 // Build the error message string. Specify no inlining for code size.
+#if defined(_MSC_VER) //modify by jiangch 2019.3.4
+template <typename T1, typename T2>
+__declspec(noinline) std::string* MakeCheckOpString(const T1& v1, const T2& v2, const char* exprtext);
+#else
 template <typename T1, typename T2>
 std::string* MakeCheckOpString(const T1& v1, const T2& v2, const char* exprtext)
-    __attribute__ ((noinline));
+__attribute__((noinline));
+#endif
 
 namespace base {
 namespace internal {
@@ -1243,7 +1265,11 @@ public:
   void SendToSyslogAndLog();  // Actually dispatch to syslog and the logs
 
   // Call abort() or similar to perform LOG(FATAL) crash.
+#if defined(_MSC_VER)  //modify by jiangch 2019.3.4
+  _declspec(noreturn) static void Fail();
+#else
   static void __attribute__ ((noreturn)) Fail();
+#endif 
 
   std::ostream& stream();
 
@@ -1291,7 +1317,12 @@ class GOOGLE_GLOG_DLL_DECL LogMessageFatal : public LogMessage {
  public:
   LogMessageFatal(const char* file, int line);
   LogMessageFatal(const char* file, int line, const CheckOpString& result);
+
+#if defined(_MSC_VER) //add by jiangch 2019.3.4
+  _declspec(noreturn)~LogMessageFatal();
+#else
   __attribute__ ((noreturn)) ~LogMessageFatal();
+#endif
 };
 
 // A non-macro interface to the log facility; (useful
@@ -1628,7 +1659,11 @@ class GOOGLE_GLOG_DLL_DECL NullStreamFatal : public NullStream {
   NullStreamFatal() { }
   NullStreamFatal(const char* file, int line, const CheckOpString& result) :
       NullStream(file, line, result) { }
+#if defined(_MSC_VER)
+ _declspec(noreturn) ~NullStreamFatal() throw () { _exit(1); }
+#else
   __attribute__ ((noreturn)) ~NullStreamFatal() throw () { _exit(1); }
+#endif
 };
 
 // Install a signal handler that will dump signal information and a stack

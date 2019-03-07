@@ -65,8 +65,12 @@
 
 //fengfeng add begin
 #include <sys/types.h>
+#ifdef _MSC_VER
+#include "glog/dirent.h" //modify by jiangch, vs 没有该头文件，自己添加了。
+#else
 #include <dirent.h>
 #include <libgen.h>
+#endif 
 //fengfeng add end
 
 
@@ -923,7 +927,11 @@ void LogFileObject::FlushUnlocked(){
         {
           if (dir == NULL || strlen(dir) <= 0)		return;
           struct stat s;
+#ifdef _MSC_VER
+		  stat(dir, &s); //add by jiangch
+#else
           lstat(dir, &s);
+#endif 
           if ( !S_ISDIR(s.st_mode) )
           {
 //            WriteRunLog(VIS_LOG_ERROR, "%s is not a valid directory.", dir);
@@ -953,12 +961,21 @@ void LogFileObject::FlushUnlocked(){
             else
             {
               //std::cout<<"要删除"<<szChild<<std::endl;
-              lstat(szChild, &s);
-              time_t tvSec;
+#ifdef _MSC_VER
+				stat(szChild, &s); //add by jiangch
+#else
+				lstat(szChild, &s);
+#endif 
+             
+              time_t tvSec; 
 #ifdef __APPLE__
               tvSec = s.st_mtimespec.tv_sec;
 #else
+#ifdef _MSC_VER
+			  tvSec = s.st_mtime; //add by jiangch
+#else
               tvSec = s.st_mtim.tv_sec;
+#endif 
 #endif
               //std::cout<<"时差："<<time(NULL) - tvSec<<" <nSpanTimeSecond"<<nSpanTimeSecond<<std::endl;
               if (time(NULL) - tvSec > nSpanTimeSecond)
@@ -1395,8 +1412,8 @@ void LogMessage::Init(const char* file,
   // We exclude the thread_id for the default thread.
   if (FLAGS_log_prefix && (line != kNoLogPrefix)) {
       //LogSeverityNames[severity][0]
-      stream() << "【" << LogSeverityNames[severity] << ' '
-             << setw(2) << 1+data_->tm_time_.tm_mon
+      stream() << "【 " << LogSeverityNames[severity] << ' ' //modify  by jiangch, 【后 加了个空格，原因：vs中提示常量后加了回车错
+        << setw(2) << 1+data_->tm_time_.tm_mon
              << setw(2) << data_->tm_time_.tm_mday
              << ' '
              << setw(2) << data_->tm_time_.tm_hour  << ':'
@@ -1407,7 +1424,7 @@ void LogMessage::Init(const char* file,
              << setfill(' ') << setw(5)
              << static_cast<unsigned int>(GetTID()) << setfill('0')
              << ' '
-             << data_->basename_ << ':' << data_->line_ << "】==》 ";
+             << data_->basename_ << ':' << data_->line_ << " 】==》 ";//modify  by jiangch, 】前 加了个空格，原因：vs为了和【对应
   }
   data_->num_prefix_chars_ = data_->stream_.pcount();
 
@@ -1799,7 +1816,7 @@ string LogSink::ToString(LogSeverity severity, const char* file, int line,
   // so subclasses of LogSink can be updated at the same time.
   int usecs = 0;
 //LogSeverityNames[severity][0]
-  stream << "【" << LogSeverityNames[severity] << ' '
+  stream << "【 " << LogSeverityNames[severity] << ' ' //modify  by jiangch, 【后 加了个空格，原因：vs中提示"常量后加了回车错误"
          << setw(2) << 1+tm_time->tm_mon
          << setw(2) << tm_time->tm_mday
          << ' '
@@ -1810,7 +1827,7 @@ string LogSink::ToString(LogSeverity severity, const char* file, int line,
          << ' '
          << setfill(' ') << setw(5) << GetTID() << setfill('0')
          << ' '
-         << file << ':' << line << "】==》 ";
+         << file << ':' << line << " 】==》 "; //modify  by jiangch, 】前 加了个空格，原因：vs为了和【对应
 
   stream << string(message, message_len);
   return stream.str();

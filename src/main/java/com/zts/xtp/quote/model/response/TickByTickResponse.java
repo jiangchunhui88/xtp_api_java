@@ -1,6 +1,7 @@
 package com.zts.xtp.quote.model.response;
 
 import com.zts.xtp.common.enums.ExchangeType;
+import com.zts.xtp.common.enums.PositionDirectionType;
 import com.zts.xtp.common.enums.TickByTickType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +37,11 @@ public class TickByTickResponse {
 
     /** 逐笔成交 */
     private TickByTickTradeResponse trade;
+
+    public void setExchangeType(int exchangeType) {
+        this.exchangeType = ExchangeType.forType(exchangeType);
+    }
+    public void setTickByTickType(int tickByTickType) {
+        this.type = TickByTickType.forType(tickByTickType);
+    }
 }

@@ -22,6 +22,8 @@ public class QuoteApiTest {
         quoteApi = new QuoteApi(testspi);
         short client = 20;
         quoteApi.connect(client,"/var/log/zts/xtp");
+		quoteApi.setUDPBufferSize(512);
+
 //        int login_result = quoteApi.login("120.27.164.138",6002,"15001030","aI2p4TiG",1);
 //        int login_result = quoteApi.login("10.25.24.48",6661,"testshopt01","123456",1);
                 int login_result = quoteApi.login("10.25.24.48",6661,"testshopt02","123456",1);

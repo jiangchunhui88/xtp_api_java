@@ -10,7 +10,8 @@ public class JNILoadLibrary {
     }
     public static void loadLibrary(String libraryPath) {
         if(libraryPath==null) libraryPath = "";
-        libraryPath = libraryPath+"cpp/src:/usr/local/lib";
+		String osLibPath = System.getProperty("user.dir");
+        libraryPath = libraryPath+"cpp/src:/usr/local/lib:"+osLibPath+"：c:/windows/system32";
         String os = System.getProperty("os.name").toLowerCase();
         boolean osIsLinux = (os.indexOf("linux") != -1);
         boolean osIsWindows = false;
@@ -24,9 +25,9 @@ public class JNILoadLibrary {
             if(osIsWindows){
                 String arch = System.getProperty("os.arch");
                 if(arch=="x86")
-                    libraryPath = "cpp/lib/win32:"+libraryPath; //加载工程目录下lib/win32下的xtp的dll
+                    libraryPath = "cpp/lib/win32/dll:"+libraryPath; //加载工程目录下lib/win32下的xtp的dll
                 else
-                    libraryPath = "cpp/lib/win64:"+libraryPath; //加载工程目录下lib/win64下的xtp的dll
+                    libraryPath = "cpp/lib/win64/dll:"+libraryPath; //加载工程目录下lib/win64下的xtp的dll
             }else{
                 osIsMacOsX = "mac os x".equals(os);
                 libraryPath = "cpp/lib/macosx:"+libraryPath; //加载工程目录下lib/linux下的xtp的dylib
@@ -55,7 +56,7 @@ public class JNILoadLibrary {
                             name.startsWith("libxtptraderapi") || name.startsWith("libxtpquoteapi") || name.startsWith("libglog") )
                             && (name.endsWith(".dylib") || name.endsWith(".jnilib"));
                 if(osIsWindows_final)
-                    isLib =  (name.startsWith("libtradeplugin") || name.startsWith("quoteplugin") ||
+		  				isLib =  (name.startsWith("quoteplugin") || name.startsWith("tradeplugin") ||
                             name.startsWith("xtptraderapi") || name.startsWith("xtpquoteapi")  || name.startsWith("glog") )
                             && name.endsWith(".dll");
                 return isLib;

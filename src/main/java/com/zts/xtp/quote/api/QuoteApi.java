@@ -60,6 +60,12 @@ public class QuoteApi {
      * @param interval interval 心跳检测时间间隔，单位为秒
      */
     public native void setHeartBeatInterval(int interval);
+    
+    /**
+     *  此函数必须在Login之前调用
+     * @param buff_size buff_size 接口接受行情的缓存，单位为M
+     */
+    public native void setUDPBufferSize(int buff_size);
 
     /**
      *  订阅行情，包括股票、指数和期权。可以一次性订阅同一证券交易所的多个合约，无论用户因为何种问题需要重新登录行情服务器，都需要重新订阅行情

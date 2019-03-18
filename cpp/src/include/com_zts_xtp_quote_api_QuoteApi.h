@@ -48,6 +48,14 @@ JNIEXPORT void JNICALL Java_com_zts_xtp_quote_api_QuoteApi_setHeartBeatInterval
   (JNIEnv *, jobject, jint);
 
 /*
+* Class:     com_zts_xtp_quote_api_QuoteApi
+* Method:    setUDPBufferSize
+* Signature: (I)V
+*/
+JNIEXPORT void JNICALL Java_com_zts_xtp_quote_api_QuoteApi_setUDPBufferSize
+(JNIEnv *, jobject, jint);
+
+/*
  * Class:     com_zts_xtp_quote_api_QuoteApi
  * Method:    subscribeMarketData
  * Signature: ([Ljava/lang/String;II)I

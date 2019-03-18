@@ -133,6 +133,15 @@ JNIEXPORT void JNICALL Java_com_zts_xtp_quote_api_QuoteApi_setHeartBeatInterval 
     pquote->SetHeartBeatInterval(interval);
 }
 
+JNIEXPORT void JNICALL Java_com_zts_xtp_quote_api_QuoteApi_setUDPBufferSize(JNIEnv *env, jobject obj, jint size)
+{
+	XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
+	if (pquote)
+	{
+		pquote->SetUDPBufferSize(size);
+	}
+}
+
 JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeMarketData (JNIEnv *env, jobject obj,
         jobjectArray tickers, jint count, jint exchangeType)
 {

@@ -669,7 +669,7 @@ void XtpQuote::OnTickByTick(XTPTBT *tbt_data) {
             env->CallVoidMethod(entrustObj, jm_inner_setOrdType, xtp_tbt_entrust->ord_type);
 
             jmethodID jm_setEntrust = env->GetMethodID(xtp_tick_by_tick_class_, "setEntrust",
-                "(Lcom/zts/xtp/quote/model/response/TickByTickEntrust;)V");
+                "(Lcom/zts/xtp/quote/model/response/TickByTickEntrustResponse;)V");
             env->CallVoidMethod(rspObj, jm_setEntrust, entrustObj);
             break;
         }
@@ -724,7 +724,7 @@ void XtpQuote::OnTickByTick(XTPTBT *tbt_data) {
             env->CallVoidMethod(tradeObj, jm_inner_setTradeFlag, xtp_tbt_trade->trade_flag);
 
             jmethodID jm_setTrade = env->GetMethodID(xtp_tick_by_tick_class_, "setTrade",
-                "(Lcom/zts/xtp/quote/model/response/TickByTickTrade;)V");
+                "(Lcom/zts/xtp/quote/model/response/TickByTickTradeResponse;)V");
             env->CallVoidMethod(rspObj, jm_setTrade, tradeObj);
             break;
         }

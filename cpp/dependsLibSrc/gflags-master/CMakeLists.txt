@@ -738,6 +738,7 @@ if (NOT GFLAGS_IS_SUBPROJECT AND NOT TARGET uninstall)
   )
   add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 endif ()
-
+if (NOT WIN32)
  set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -fPIC")
  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif(NOT WIN32)

@@ -1,4 +1,4 @@
-// Copyright (c) 1999, Google Inc.
+﻿// Copyright (c) 1999, Google Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -1478,8 +1478,8 @@ void LogMessage::Init(const char* file,
   // We exclude the thread_id for the default thread.
   if (FLAGS_log_prefix && (line != kNoLogPrefix)) {
       //LogSeverityNames[severity][0]
-      stream() << "【 " << LogSeverityNames[severity] << ' ' //modify  by jiangch, 【后 加了个空格，原因：vs中提示常量后加了回车错
-        << setw(2) << 1+data_->tm_time_.tm_mon
+      stream() << " 【 " << LogSeverityNames[severity] << ' '
+             << setw(2) << 1+data_->tm_time_.tm_mon
              << setw(2) << data_->tm_time_.tm_mday
              << ' '
              << setw(2) << data_->tm_time_.tm_hour  << ':'
@@ -1490,11 +1490,12 @@ void LogMessage::Init(const char* file,
              << setfill(' ') << setw(5)
              << static_cast<unsigned int>(GetTID()) << setfill('0')
              << ' '
-             << data_->basename_ << ':' << data_->line_ << " 】==》 ";//modify  by jiangch, 】前 加了个空格，原因：vs为了和【对应
+             << data_->basename_ << ':' << data_->line_ << " 】==》  ";
   }
   data_->num_prefix_chars_ = data_->stream_.pcount();
 
   if (!FLAGS_log_backtrace_at.empty()) {
+	  stream() << "!FLAGS_log_backtrace_at.empty()";
     char fileline[128];
     snprintf(fileline, sizeof(fileline), "%s:%d", data_->basename_, line);
 #ifdef HAVE_STACKTRACE
@@ -1882,7 +1883,7 @@ string LogSink::ToString(LogSeverity severity, const char* file, int line,
   // so subclasses of LogSink can be updated at the same time.
   int usecs = 0;
 //LogSeverityNames[severity][0]
-  stream << "【 " << LogSeverityNames[severity] << ' ' //modify  by jiangch, 【后 加了个空格，原因：vs中提示"常量后加了回车错误"
+  stream << "【" << LogSeverityNames[severity] << ' '
          << setw(2) << 1+tm_time->tm_mon
          << setw(2) << tm_time->tm_mday
          << ' '
@@ -1893,7 +1894,7 @@ string LogSink::ToString(LogSeverity severity, const char* file, int line,
          << ' '
          << setfill(' ') << setw(5) << GetTID() << setfill('0')
          << ' '
-         << file << ':' << line << " 】==》 "; //modify  by jiangch, 】前 加了个空格，原因：vs为了和【对应
+         << file << ':' << line << "】==》 ";
 
   stream << string(message, message_len);
   return stream.str();

@@ -133,19 +133,32 @@ JNIEXPORT void JNICALL Java_com_zts_xtp_quote_api_QuoteApi_setHeartBeatInterval 
     pquote->SetHeartBeatInterval(interval);
 }
 
+JNIEXPORT void JNICALL Java_com_zts_xtp_quote_api_QuoteApi_setUDPBufferSize(JNIEnv *env, jobject obj, jint size)
+{
+	XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
+	if (pquote)
+	{
+		pquote->SetUDPBufferSize(size);
+	}
+}
+
 JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeMarketData (JNIEnv *env, jobject obj,
         jobjectArray tickers, jint count, jint exchangeType)
 {
     LOG(INFO) << __PRETTY_FUNCTION__;
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
-
-    char *pTickers[count];
+   //char *pTickers[count]; //remove by jiangch 2019.3.4,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
+	if (nullptr == pTickers)
+	{
+		return -1;
+	}
+		
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
         
     }
-
     copy_tickers(env,tickers,pTickers,count);
     int result = pquote->SubscribeMarketData(pTickers, count, (XTP_EXCHANGE_TYPE)exchangeType);
 
@@ -154,6 +167,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeMarketData (
         //LOG(INFO) << pTickers[i] << "; " << exchangeType;
         delete[] pTickers[i];
     }
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 
@@ -161,7 +175,12 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeMarketData
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    char *pTickers[count];
+	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
+	if (nullptr == pTickers)
+	{
+		return -1;
+	}
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
@@ -174,6 +193,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeMarketData
     {
         delete[] pTickers[i];
     }
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 
@@ -181,7 +201,8 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeOrderBook (J
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    char *pTickers[count];
+	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
@@ -194,6 +215,8 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeOrderBook (J
     {
         delete[] pTickers[i];
     }
+
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 
@@ -201,7 +224,12 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeOrderBook 
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    char *pTickers[count];
+	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
+	if (nullptr == pTickers)
+	{
+		return -1;
+	}
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
@@ -214,6 +242,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeOrderBook 
     {
         delete[] pTickers[i];
     }
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 
@@ -221,7 +250,8 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeTickByTick (
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    char *pTickers[count];
+	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
@@ -234,6 +264,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeTickByTick (
     {
         delete[] pTickers[i];
     }
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 
@@ -241,7 +272,12 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeTickByTick
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    char *pTickers[count];
+	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
+	if (nullptr == pTickers)
+	{
+		return -1;
+	}
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
@@ -254,6 +290,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeTickByTick
     {
         delete[] pTickers[i];
     }
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 
@@ -303,7 +340,13 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_queryTickersPriceInfo
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    char *pTickers[count];
+    //char *pTickers[count]; //remove by jiangch  2019.3.4,  vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	char **pTickers = new char*[count];  //add by jiangch 2019.3.4
+	if (nullptr == pTickers)
+	{
+		return -1;
+	}
+
     for(int i=0; i<count; i++)
     {
         pTickers[i] = new char[XTP_TICKER_LEN];
@@ -316,6 +359,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_queryTickersPriceInfo
     {
         delete[] pTickers[i];
     }
+	delete[] pTickers; //add by jiangch 2019.3.4
     return result;
 }
 

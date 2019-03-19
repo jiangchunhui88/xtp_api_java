@@ -20,7 +20,7 @@ set (CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 option (WITH_GFLAGS "Use gflags" ON)
 option (WITH_THREADS "Enable multithreading support" ON)
 option (WITH_TLS "Enable Thread Local Storage (TLS) support" ON)
-option (BUILD_SHARED_LIBS "Build shared libraries" OFF)
+option (BUILD_SHARED_LIBS "Build shared libraries" ON)
 option (PRINT_UNSYMBOLIZED_STACK_TRACES
   "Print raw pc values on symbolization failure" OFF)
 
@@ -545,6 +545,11 @@ else (NOT BUILD_SHARED_LIBS)
     "GOOGLE_GLOG_DLL_DECL=${_IMPORT}")
   target_compile_definitions (glog INTERFACE
     "GOOGLE_GLOG_DLL_DECL_FOR_UNITTESTS=${_IMPORT}")
+if (NOT WIN32)
+  set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -fPIC")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif(NOT WIN32)
+
 endif (NOT BUILD_SHARED_LIBS)
 
 # Unit testing
@@ -648,6 +653,34 @@ install (TARGETS glog
   PUBLIC_HEADER DESTINATION ${_glog_CMake_INCLUDE_DIR}/glog
   LIBRARY DESTINATION ${_glog_CMake_LIBDIR}
   ARCHIVE DESTINATION ${_glog_CMake_LIBDIR})
+  
+  #add to  app  project,modify by jiangch
+ if (WIN32)
+	if (CMAKE_CL_64)
+		install(TARGETS glog   
+     		ARCHIVE DESTINATION  "${PROJECT_SOURCE_DIR}/../../lib/win64/dll" 
+			LIBRARY DESTINATION  "${PROJECT_SOURCE_DIR}/../../lib/win64/dll" 
+			RUNTIME DESTINATION  "${PROJECT_SOURCE_DIR}/../../lib/win64/dll")
+		
+	else ()
+		install(TARGETS glog   
+     		ARCHIVE DESTINATION  "${PROJECT_SOURCE_DIR}/../../lib/win32/dll" 
+			LIBRARY DESTINATION  "${PROJECT_SOURCE_DIR}/../../lib/win32/dll" 
+			RUNTIME DESTINATION  "${PROJECT_SOURCE_DIR}/../../lib/win32/dll")
+	endif()
+ 
+ elseif (APPLE)
+	install(TARGETS glog
+			LIBRARY DESTINATION "${PROJECT_SOURCE_DIR}/../../lib/macosx"
+			ARCHIVE DESTINATION "${PROJECT_SOURCE_DIR}/../../lib/macosx"
+			RUNTIME DESTINATION "${PROJECT_SOURCE_DIR}/../../lib/macosx")
+ elseif (UNIX)
+	install(TARGETS glog
+			LIBRARY DESTINATION "${PROJECT_SOURCE_DIR}/../../lib/linux"
+			ARCHIVE DESTINATION "${PROJECT_SOURCE_DIR}/../../lib/linux"
+			RUNTIME DESTINATION "${PROJECT_SOURCE_DIR}/../../lib/linux")
+ endif()
+
 
 set (glog_CMake_VERSION 3.0)
 

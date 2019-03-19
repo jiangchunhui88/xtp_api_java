@@ -14,7 +14,11 @@ include_directories(${JAVA_HOME}/include)
 IF (WIN32)
     MESSAGE(STATUS "Now is windows")
     include_directories(${JAVA_HOME}/include/win32)
-    LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/win32/)
+	IF (CMAKE_CL_64)#win64, modify by jiangch
+		LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/win64/dll)
+	ELSE ()
+		LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/win32/dll)
+	ENDIF ()
 ELSEIF (APPLE)
     MESSAGE(STATUS "Now is Apple systens.")
     include_directories(${JAVA_HOME}/include/darwin)
@@ -95,17 +99,28 @@ IF (WIN32)
     TARGET_LINK_LIBRARIES(quoteplugin xtpquoteapi.dll glog.dll )
     install(TARGETS tradeplugin DESTINATION C:/Windows/System32)
     install(TARGETS quoteplugin DESTINATION C:/Windows/System32)
+	
     #copy xtp lib and glog lib to os lib path
-    install(FILES lib/win32/glog.dll DESTINATION C:/Windows/System32)
-    install(FILES lib/win32/xtpquoteapi.dll DESTINATION C:/Windows/System32)
-    install(FILES lib/win32/xtptraderapi.dll DESTINATION C:/Windows/System32)
+	IF (CMAKE_CL_64)# win64,add by jiangch
+	install(FILES lib/win64/dll/glog.dll DESTINATION C:/Windows/System32)
+    install(FILES lib/win64/dll/xtpquoteapi.dll DESTINATION C:/Windows/System32)
+    install(FILES lib/win64/dll/xtptraderapi.dll DESTINATION C:/Windows/System32)
+	ELSE ()
+    install(FILES lib/win32/dll/glog.dll DESTINATION C:/Windows/System32)
+    install(FILES lib/win32/dll/xtpquoteapi.dll DESTINATION C:/Windows/System32)
+    install(FILES lib/win32/dll/xtptraderapi.dll DESTINATION C:/Windows/System32)
+	ENDIF()
+	
     #copy xtp lib and glog lib to os lib path
     install(FILES C:/Windows/System32/tradeplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/src)
     install(FILES C:/Windows/System32/quoteplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/src)
+
     #copy all lib to os javaproject/build/
-    install(FILES C:/Windows/System32/glog.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/libs/win/C:/Windows/System32)
-    install(FILES C:/Windows/System32/xtptraderapi.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/win/C:/Windows/System32)
-    install(FILES C:/Windows/System32/xtpquoteapi.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/win/C:/Windows/System32)
+	#begin remove，removed by jiangch below
+    #install(FILES C:/Windows/System32/glog.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/libs/win/C:/Windows/System32)
+    #install(FILES C:/Windows/System32/xtptraderapi.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/win/C:/Windows/System32)
+    #install(FILES C:/Windows/System32/xtpquoteapi.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/win/C:/Windows/System32)
+	#end remove above
 ELSEIF (APPLE)
     #copy tradeplugin quoteplugin to os lib path
     TARGET_LINK_LIBRARIES(tradeplugin xtptraderapi.dylib glog.dylib )

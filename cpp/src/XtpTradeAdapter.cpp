@@ -174,7 +174,7 @@ jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryTradesByXTPID(JNIEnv *env,
 
 }
 
-jstring Java_com_zts_xtp_trade_api_TradeApi_insertOrder(JNIEnv *env, jobject obj, jobject tradeOrder, jstring strSessionId)
+jstring JNICALL Java_com_zts_xtp_trade_api_TradeApi_insertOrder(JNIEnv *env, jobject obj, jobject tradeOrder, jstring strSessionId)
 {
 
    //build the order

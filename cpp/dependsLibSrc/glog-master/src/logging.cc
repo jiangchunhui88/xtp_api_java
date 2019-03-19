@@ -1,4 +1,4 @@
-// Copyright (c) 1999, Google Inc.
+﻿// Copyright (c) 1999, Google Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -65,8 +65,12 @@
 
 //fengfeng add begin
 #include <sys/types.h>
+#ifdef _MSC_VER
+#include "glog/dirent.h" //modify by jiangch, vs 没有该头文件，自己添加了。
+#else
 #include <dirent.h>
 #include <libgen.h>
+#endif 
 //fengfeng add end
 
 
@@ -393,10 +397,10 @@ const char* GetLogSeverityName(LogSeverity severity) {
   return LogSeverityNames[severity];
 }
 
-    int nlogKeepSecond = 3600*24*15; //默认15天
+    int g_nlogKeepSecond = 3600*24*15; //默认15天
     //设置log保留的最长时间 单位秒 过期自动删除 fengfeng
     void SetDeleteLogBeyondHowLongTimeBySeconds(int nlogKeepSecond){
-      nlogKeepSecond = nlogKeepSecond;
+		g_nlogKeepSecond = nlogKeepSecond;
     }
 
 static bool SendEmailInternal(const char*dest, const char *subject,
@@ -923,7 +927,11 @@ void LogFileObject::FlushUnlocked(){
         {
           if (dir == NULL || strlen(dir) <= 0)		return;
           struct stat s;
+#ifdef _MSC_VER
+		  stat(dir, &s); //add by jiangch
+#else
           lstat(dir, &s);
+#endif 
           if ( !S_ISDIR(s.st_mode) )
           {
 //            WriteRunLog(VIS_LOG_ERROR, "%s is not a valid directory.", dir);
@@ -953,12 +961,21 @@ void LogFileObject::FlushUnlocked(){
             else
             {
               //std::cout<<"要删除"<<szChild<<std::endl;
-              lstat(szChild, &s);
-              time_t tvSec;
+#ifdef _MSC_VER
+				stat(szChild, &s); //add by jiangch
+#else
+				lstat(szChild, &s);
+#endif 
+             
+              time_t tvSec; 
 #ifdef __APPLE__
               tvSec = s.st_mtimespec.tv_sec;
 #else
+#ifdef _MSC_VER
+			  tvSec = s.st_mtime; //add by jiangch
+#else
               tvSec = s.st_mtim.tv_sec;
+#endif 
 #endif
               //std::cout<<"时差："<<time(NULL) - tvSec<<" <nSpanTimeSecond"<<nSpanTimeSecond<<std::endl;
               if (time(NULL) - tvSec > nSpanTimeSecond)
@@ -978,6 +995,70 @@ void LogFileObject::FlushUnlocked(){
           }
         }
 
+
+bool LogFileObject::CreateLogfile(const string& time_pid_string) {
+
+	string string_today = time_pid_string.substr(0, 8);
+	string string_filename = base_filename_ + string_today;
+	const char* filename = string_filename.c_str();
+	std::cout << "filename===========" << filename << std::endl;
+	const char* slash = strrchr(filename, PATH_SEPARATOR);
+	string logDir("");
+	if (slash) logDir = string(filename, slash - filename + 1);  // 获取log路径
+
+	deleteOldLogs(logDir.c_str(), g_nlogKeepSecond); // 删除过期log
+
+	//如果没有log 创建新的log
+	int fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, FLAGS_logfile_mode);
+	if (fd == -1) return false;
+#ifdef HAVE_FCNTL
+	// Mark the file close-on-exec. We don't really care if this fails
+	fcntl(fd, F_SETFD, FD_CLOEXEC);
+#endif
+
+	file_ = fdopen(fd, "a");  // Make a FILE*.
+	if (file_ == NULL) {  // Man, we're screwed!
+		close(fd);
+		unlink(filename);  // Erase the half-baked evidence: an unusable log file
+		return false;
+	}
+
+	//对 link 进行处理
+	if (!symlink_basename_.empty()) {
+		//删除老的link
+		string linkpath("");
+		const string linkname = symlink_basename_ + '.' + LogSeverityNames[severity_];
+		linkpath += linkname;
+		unlink(linkpath.c_str());  // delete old one if it exists
+
+		//创建新的link
+#if defined(OS_WINDOWS)
+
+#elif defined(HAVE_UNISTD_H)
+		// We must have unistd.h.
+		// Make the symlink be relative (in the same dir) so that if the
+		// entire log directory gets relocated the link is still valid.
+
+		//	const char *linkdest = slash ? (slash + 1) : filename; //removed by jiangch，
+																  //都用filename即可,因为filename 为绝对路径
+		if (symlink(filename, linkpath.c_str()) != 0) {
+			// silently ignore failures
+		}
+		if (!FLAGS_log_link.empty()) {
+			linkpath = FLAGS_log_link + "/" + linkname;
+			unlink(linkpath.c_str());                  // delete old one if it exists
+			if (symlink(filename, linkpath.c_str()) != 0) {
+				// silently ignore failures
+			}
+		}
+#endif 
+	}
+
+	return true;
+}
+
+
+#if 0 //remove by jiangch
 bool LogFileObject::CreateLogfile(const string& time_pid_string) {
     //原版实现
 //  string string_filename = base_filename_+filename_extension_+
@@ -1030,7 +1111,7 @@ bool LogFileObject::CreateLogfile(const string& time_pid_string) {
       // silently ignore failures
     }
 
-    deleteOldLogs(logDir.c_str(),nlogKeepSecond);//fengfeng add begin 找到log目录 删除超过多少秒的之前的日志  默认15天
+    deleteOldLogs(logDir.c_str(),g_nlogKeepSecond);//fengfeng add begin 找到log目录 删除超过多少秒的之前的日志  默认15天
 
     // Make an additional link to the log file in a place specified by
     // FLAGS_log_link, if indicated
@@ -1046,6 +1127,8 @@ bool LogFileObject::CreateLogfile(const string& time_pid_string) {
 
   return true;  // Everything worked
 }
+
+#endif 
 
 //每日生成一个日志的实现 fengfeng
 //新增DayHasChanged 查看日期是否改动 fengfeng
@@ -1395,7 +1478,7 @@ void LogMessage::Init(const char* file,
   // We exclude the thread_id for the default thread.
   if (FLAGS_log_prefix && (line != kNoLogPrefix)) {
       //LogSeverityNames[severity][0]
-      stream() << "【" << LogSeverityNames[severity] << ' '
+      stream() << " 【 " << LogSeverityNames[severity] << ' '
              << setw(2) << 1+data_->tm_time_.tm_mon
              << setw(2) << data_->tm_time_.tm_mday
              << ' '
@@ -1407,11 +1490,12 @@ void LogMessage::Init(const char* file,
              << setfill(' ') << setw(5)
              << static_cast<unsigned int>(GetTID()) << setfill('0')
              << ' '
-             << data_->basename_ << ':' << data_->line_ << "】==》 ";
+             << data_->basename_ << ':' << data_->line_ << " 】==》  ";
   }
   data_->num_prefix_chars_ = data_->stream_.pcount();
 
   if (!FLAGS_log_backtrace_at.empty()) {
+	  stream() << "!FLAGS_log_backtrace_at.empty()";
     char fileline[128];
     snprintf(fileline, sizeof(fileline), "%s:%d", data_->basename_, line);
 #ifdef HAVE_STACKTRACE

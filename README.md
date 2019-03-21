@@ -94,7 +94,7 @@
     
         > 根据系统安装对应jdk https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
    
-    * 4）在工程根目录下的cpp/build/目录执行cmake ..&&make&&make install 则在/usr/local/lib(或c:\windows\system32\)下会新增5个动态库：
+    * 4）在工程根目录下的mkdir cpp/build,进入到cpp/build目录执行cmake ..&&make&&make install 则在/usr/local/lib(或c:\windows\system32\)下会新增5个动态库：
     
         > linux：libglog.so、libxtptraderapi.so、libxtpquoteapi.so、libtradeplugin.so、libquoteplugin.so
    

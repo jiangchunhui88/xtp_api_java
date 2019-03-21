@@ -6,7 +6,7 @@
     请先到中泰证券xtp官方网站申请测试账号 https://xtp.zts.com.cn/register  用拿到的测试账号，测试交易地址用120.27.164.69:6001，serverkey：b8aa7173bba3470e390d787219b2112e，测试行情地址用120.27.164.138:6002
                                                                                         
     API参考官方C++版本的接口文档https://xtp.zts.com.cn/home
-  
+   
 
 ##如何使用：
 * **方式一：直接使用成品**
@@ -15,20 +15,20 @@
         > linux：
         
             cp cpp/linux/* /usr/local/lib/
-            cp cpp/libtradeplugin.so /usr/local/lib/
-            cp cpp/libquoteplugin.so /usr/local/lib/
+            cp cpp/src/libtradeplugin.so /usr/local/lib/
+            cp cpp/src/libquoteplugin.so /usr/local/lib/
             
         > mac：
         
             cp cpp/mac/* /usr/local/lib/
-            cp cpp/libtradeplugin.dylib /usr/local/lib/
-            cp cpp/libquoteplugin.dylib /usr/local/lib/
+            cp cpp/src/libtradeplugin.dylib /usr/local/lib/
+            cp cpp/src/libquoteplugin.dylib /usr/local/lib/
             
         > win：
         
             copy cpp\win32或win64\dll\*  c:\windows\system32\
-            copy cpp\libtradeplugin.dll  c:\windows\system32\
-            copy cpp\libquoteplugin.dll  c:\windows\system32\
+            copy cpp\src\libtradeplugin.dll  c:\windows\system32\
+            copy cpp\src\libquoteplugin.dll  c:\windows\system32\
     * 2）在量化交易java代码中引入xtpapi-1.1.18.13.jar并使用
     
          > 如需进行单元测试：
@@ -146,4 +146,5 @@
                    private static final String PASSWORD = "xxxxxx";//xtp密码
                    private static final String DATA_FOLDER = "/var/log/zts/xtp";//java api输出日志的本地目录
           运行Application.java即可
+          
           

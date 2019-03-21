@@ -147,7 +147,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeMarketData (
 {
     LOG(INFO) << __PRETTY_FUNCTION__;
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
-   //char *pTickers[count]; //remove by jiangch 2019.3.4,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+   //char *pTickers[count]; //remove by jiangch 2019.3.4
 	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
 	if (nullptr == pTickers)
 	{
@@ -175,7 +175,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeMarketData
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	//char *pTickers[count]; //remove by jiangch
 	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
 	if (nullptr == pTickers)
 	{
@@ -201,7 +201,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeOrderBook (J
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	//char *pTickers[count]; //remove by jiangch
 	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
     for(int i=0; i<count; i++)
     {
@@ -224,7 +224,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeOrderBook 
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	//char *pTickers[count]; //remove by jiangch
 	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
 	if (nullptr == pTickers)
 	{
@@ -250,7 +250,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_subscribeTickByTick (
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	//char *pTickers[count]; //remove by jiangch
 	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
     for(int i=0; i<count; i++)
     {
@@ -272,7 +272,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_unSubscribeTickByTick
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-	//char *pTickers[count]; //remove by jiangch,vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+	//char *pTickers[count]; //remove by jiangch
 	char **pTickers = new char*[count]; //add by jiangch 2019.3.4
 	if (nullptr == pTickers)
 	{
@@ -340,7 +340,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_quote_api_QuoteApi_queryTickersPriceInfo
 {
     XtpQuote *pquote = getHandle<XtpQuote>(env, obj);
 
-    //char *pTickers[count]; //remove by jiangch  2019.3.4,  vs¡À¨¤¨°??¡Â2??¡ì3?¡À?3¡è¨ºy¡Á¨¦
+    //char *pTickers[count]; //remove by jiangch  2019.3.4
 	char **pTickers = new char*[count];  //add by jiangch 2019.3.4
 	if (nullptr == pTickers)
 	{

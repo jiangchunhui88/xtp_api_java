@@ -15,20 +15,28 @@
         > linux：
         
             cp cpp/linux/* /usr/local/lib/
-            cp cpp/src/libtradeplugin.so /usr/local/lib/
-            cp cpp/src/libquoteplugin.so /usr/local/lib/
+            cp cpp/buildcpp/linux/libtradeplugin.so /usr/local/lib/
+            cp cpp/buildcpp/linux/libquoteplugin.so /usr/local/lib/
             
         > mac：
         
             cp cpp/mac/* /usr/local/lib/
-            cp cpp/src/libtradeplugin.dylib /usr/local/lib/
-            cp cpp/src/libquoteplugin.dylib /usr/local/lib/
+            cp cpp/buildcpp/macosx/libtradeplugin.dylib /usr/local/lib/
+            cp cpp/buildcpp/macosx/libquoteplugin.dylib /usr/local/lib/
             
-        > win：
+        > win32：
         
-            copy cpp\win32或win64\dll\*  c:\windows\system32\
-            copy cpp\src\libtradeplugin.dll  c:\windows\system32\
-            copy cpp\src\libquoteplugin.dll  c:\windows\system32\
+            copy cpp\lib\win32\dll\*  c:\windows\system32\
+            copy cpp\buildcpp\win32\libtradeplugin.dll  c:\windows\system32\
+            copy cpp\buildcpp\win32\libquoteplugin.dll  c:\windows\system32\
+            
+         > win64：
+                 
+            copy cpp\lib\win64\dll\*  c:\windows\system32\
+            copy cpp\buildcpp\win64\libtradeplugin.dll  c:\windows\system32\
+            copy cpp\buildcpp\win64\libquoteplugin.dll  c:\windows\system32\
+                     
+                     
     * 2）在量化交易java代码中引入xtpapi-1.1.18.13.jar并使用
     
          > 如需进行单元测试：

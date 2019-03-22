@@ -52,15 +52,15 @@
 #endif
 #include <vector>
 
-//add by jiangch，原因：vs2015中没有以下宏的定�?
-#if defined(_MSC_VER)
+
+#if defined(_MSC_VER)//add by jiangch，原因：vs2015中没有以下宏的定义
 
 #ifndef __builtin_expect
 #define __builtin_expect(EXP, C)  (EXP)
 #endif 
 
 #ifndef __PRETTY_FUNCTION__
-#define __PRETTY_FUNCTION__  __FUNCTION__
+#define __PRETTY_FUNCTION__  (__FUNCTION__)
 #endif 
 
 #endif // add end.
@@ -1553,7 +1553,7 @@ GOOGLE_GLOG_DLL_DECL void TruncateStdoutStderr();
 // Thread-safe.
 GOOGLE_GLOG_DLL_DECL const char* GetLogSeverityName(LogSeverity severity);
 
-//设置log保留的最长时�?单位�?过期自动删除 fengfeng
+//设置log保留的最长时间 单位秒 过期自动删除 fengfeng
 GOOGLE_GLOG_DLL_DECL void SetDeleteLogBeyondHowLongTimeBySeconds(int nlogKeepSecond);
 
 // ---------------------------------------------------------------------

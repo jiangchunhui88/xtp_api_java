@@ -52,8 +52,8 @@
 #endif
 #include <vector>
 
-//add by jiangch，原因：vs2015中没有以下宏的定义
-#if defined(_MSC_VER)
+
+#if defined(_MSC_VER)//add by jiangch，原因：vs2015中没有以下宏的定义
 
 #ifndef __builtin_expect
 #define __builtin_expect(EXP, C)  (EXP)

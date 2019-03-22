@@ -105,15 +105,18 @@ IF (WIN32)
 	install(FILES lib/win64/dll/glog.dll DESTINATION C:/Windows/System32)
     install(FILES lib/win64/dll/xtpquoteapi.dll DESTINATION C:/Windows/System32)
     install(FILES lib/win64/dll/xtptraderapi.dll DESTINATION C:/Windows/System32)
+	 #copy xtp lib and glog lib to os lib path
+    install(FILES C:/Windows/System32/tradeplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/win64)
+    install(FILES C:/Windows/System32/quoteplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/win64)
 	ELSE ()
     install(FILES lib/win32/dll/glog.dll DESTINATION C:/Windows/System32)
     install(FILES lib/win32/dll/xtpquoteapi.dll DESTINATION C:/Windows/System32)
     install(FILES lib/win32/dll/xtptraderapi.dll DESTINATION C:/Windows/System32)
+	install(FILES C:/Windows/System32/tradeplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/win32)
+    install(FILES C:/Windows/System32/quoteplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/win32)
 	ENDIF()
 	
-    #copy xtp lib and glog lib to os lib path
-    install(FILES C:/Windows/System32/tradeplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/src)
-    install(FILES C:/Windows/System32/quoteplugin.dll DESTINATION ${PROJECT_SOURCE_DIR}/src)
+   
 
     #copy all lib to os javaproject/build/
 	#begin remove，removed by jiangch below
@@ -132,8 +135,8 @@ ELSEIF (APPLE)
     install(FILES lib/macosx/libxtptraderapi.dylib DESTINATION /usr/local/lib)
     install(FILES lib/macosx/libxtpquoteapi.dylib DESTINATION /usr/local/lib)
     #copy xtp lib and glog lib to os lib path
-    install(FILES /usr/local/lib/libtradeplugin.dylib DESTINATION ${PROJECT_SOURCE_DIR}/src)
-    install(FILES /usr/local/lib/libquoteplugin.dylib DESTINATION ${PROJECT_SOURCE_DIR}/src)
+    install(FILES /usr/local/lib/libtradeplugin.dylib DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/macosx)
+    install(FILES /usr/local/lib/libquoteplugin.dylib DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/macosx)
     #copy all lib to os javaproject/build/
     install(FILES /usr/local/lib/libglog.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/macosx/libs/usr/local/lib)
     install(FILES /usr/local/lib/libxtptraderapi.dylib DESTINATION ${PROJECT_SOURCE_DIR}/../build/libs/macosx/usr/local/lib)
@@ -149,8 +152,8 @@ ELSEIF (UNIX)
     install(FILES lib/linux/libxtptraderapi.so DESTINATION /usr/local/lib)
     install(FILES lib/linux/libxtpquoteapi.so DESTINATION /usr/local/lib)
     #copy xtp lib and glog lib to os lib path
-    install(FILES /usr/local/lib/libtradeplugin.so DESTINATION ${PROJECT_SOURCE_DIR}/src)
-    install(FILES /usr/local/lib/libquoteplugin.so DESTINATION ${PROJECT_SOURCE_DIR}/src)
+    install(FILES /usr/local/lib/libtradeplugin.so DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/linux)
+    install(FILES /usr/local/lib/libquoteplugin.so DESTINATION ${PROJECT_SOURCE_DIR}/buildcpp/linux)
     #copy all lib to os javaproject/build/
     install(FILES /usr/local/lib/libglog.so DESTINATION ${PROJECT_SOURCE_DIR}/../build/libs/linux/usr/local/lib)
     install(FILES /usr/local/lib/libxtptraderapi.so DESTINATION ${PROJECT_SOURCE_DIR}/../build/libs/linux/usr/local/lib)

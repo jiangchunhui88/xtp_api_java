@@ -4,22 +4,24 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 group = 'com.zts.xtp'
-version = '1.1.18.14'
+version = '1.1.18.13'
 
 
 
 buildscript {
     repositories {
-        maven {
-            url 'http://artifactory.sh.zts.com.cn:8081/artifactory/plugins-release'
-            credentials {
-                username = "${artifactory_user}"
-                password = "${artifactory_password}"
-            }
-        }
+//        maven {
+//            url 'http://artifactory.sh.zts.com.cn:8081/artifactory/plugins-release'
+//            credentials {
+//                username = "${artifactory_user}"
+//                password = "${artifactory_password}"
+//            }
+//        }
         maven {
            url "https://plugins.gradle.org/m2/"
         }
+        maven{url "http://maven.ibiblio.org/maven2/"}
+        maven{url "http://maven.aliyun.com/nexus/content/groups/public/"}
     }
     dependencies {
         //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
@@ -69,12 +71,17 @@ task buildWithDeps(type: Jar) {
 repositories {
     mavenLocal()
     maven {
-        url 'http://artifactory.sh.zts.com.cn:8081/artifactory/plugins-release'
-        credentials {
-            username = "${artifactory_user}"
-            password = "${artifactory_password}"
-        }
+        url "https://plugins.gradle.org/m2/"
     }
+    maven{url "http://maven.ibiblio.org/maven2/"}
+    maven{url "http://maven.aliyun.com/nexus/content/groups/public/"}
+//    maven {
+//        url 'http://artifactory.sh.zts.com.cn:8081/artifactory/plugins-release'
+//        credentials {
+//            username = "${artifactory_user}"
+//            password = "${artifactory_password}"
+//        }
+//    }
 }
 
 ext {
@@ -92,6 +99,7 @@ dependencies {
             "org.hamcrest:hamcrest-all:${hamcrest_version}"
     )
 }
+
 
 publishing {
     publications {

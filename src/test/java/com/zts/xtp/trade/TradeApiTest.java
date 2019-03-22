@@ -37,20 +37,25 @@ public class TradeApiTest {
         JNILoadLibrary.loadLibrary();
         TradeSpi tradeSpi = new TradeSpiImpl();
         tradeApi = new TradeApi(tradeSpi);
-        tradeApi.init((short)18, "f11dcc367a5963df20be15408df9a86c",
-            "/var/log/zts/xtp", XtpLogLevel.XTP_LOG_LEVEL_INFO);
-        sessionId = tradeApi.login("10.26.134.198", 8016,
-            "testshopt03tgt", "123456", TransferProtocol.XTP_PROTOCOL_TCP);
 
+        //现货
+        tradeApi.init((short)18, "b8aa7173bba3470e390d787219b2112e",
+            "/var/log/zts/xtp", XtpLogLevel.XTP_LOG_LEVEL_INFO);
+        sessionId = tradeApi.login("120.27.164.69", 6001,
+            "15003916", "xxxxxx", TransferProtocol.XTP_PROTOCOL_TCP);
+
+
+        //现货
+//        tradeApi.init((short)18, "f11dcc367a5963df20be15408df9a86c",
+//            "/var/log/zts/xtp", XtpLogLevel.XTP_LOG_LEVEL_INFO);
+//        sessionId = tradeApi.login("10.26.134.198", 8016,
+//            "testshopt04tgt", "123456", TransferProtocol.XTP_PROTOCOL_TCP);
+
+        //期权
 //        tradeApi.init((short)18, "b8aa7173bba3470e390d787219b2112e",
 //                "/var/log/zts/xtp", XtpLogLevel.XTP_LOG_LEVEL_INFO);
 //        sessionId = tradeApi.login("10.29.181.88", 8002,
 //                "testshopt02", "123456", TransferProtocol.XTP_PROTOCOL_TCP);
-
-//        tradeApi.init((short)18, "b8aa7173bba3470e390d787219b2112e",
-//            "/var/log/zts/xtp", XtpLogLevel.XTP_LOG_LEVEL_INFO);
-//        sessionId = tradeApi.login("120.27.164.69", 6001,
-//            "15001030", "aI2p4TiG", TransferProtocol.XTP_PROTOCOL_TCP);
 
 
         Assert.assertNotNull("login fail", sessionId);
@@ -217,7 +222,7 @@ public class TradeApiTest {
     @Test
     public void testQueryETF() {
         System.out.println("testQueryETF");
-        ETFBaseQueryRequest req = ETFBaseQueryRequest.builder().marketType(MarketType.XTP_MKT_INIT).build();
+        ETFBaseQueryRequest req = ETFBaseQueryRequest.builder().marketType(MarketType.XTP_MKT_SH_A).build();
 
         int result = tradeApi.queryETF(req, sessionId, 13);
         Assert.assertEquals(result, 0);
@@ -269,11 +274,19 @@ public class TradeApiTest {
 
     //==============Common Functions=========
     private String insertOrder() {
+        //期权
+//        OrderInsertRequest req = OrderInsertRequest.builder()
+//                .orderXtpId("0").orderClientId(2).ticker("10001033").marketType(MarketType.XTP_MKT_SH_A)
+//                .price(26).stopPrice(0).quantity(1).priceType(PriceType.XTP_PRICE_ALL_OR_CANCEL)
+//                .sideType(SideType.XTP_SIDE_SELL).businessType(BusinessType.XTP_BUSINESS_TYPE_OPTION)
+//                    .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_OPEN).build();
+
+        //现货
         OrderInsertRequest req = OrderInsertRequest.builder()
-                .orderXtpId("0").orderClientId(2).ticker("10001033").marketType(MarketType.XTP_MKT_SH_A)
+                .orderXtpId("0").orderClientId(2).ticker("600000").marketType(MarketType.XTP_MKT_SH_A)
                 .price(26).stopPrice(0).quantity(1).priceType(PriceType.XTP_PRICE_ALL_OR_CANCEL)
-                .sideType(SideType.XTP_SIDE_SELL).businessType(BusinessType.XTP_BUSINESS_TYPE_OPTION)
-                    .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_OPEN).build();
+                .sideType(SideType.XTP_SIDE_SELL).businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
+                .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_OPEN).build();
 
         return tradeApi.insertOrder(req, sessionId);
     }

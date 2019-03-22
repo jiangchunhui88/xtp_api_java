@@ -318,6 +318,7 @@ jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryOrders(JNIEnv *env, jobjec
 
     //build the query parameter
     XTPQueryOrderReq orderQueryParam;
+    memset(&orderQueryParam,0,sizeof(struct XTPQueryOrderReq));
 
     jclass queryParamClass = env->GetObjectClass(queryParam);
     assert(queryParamClass != NULL);
@@ -359,6 +360,7 @@ jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryTrades(JNIEnv *env, jobjec
 
     //build the query parameter
     XTPQueryTraderReq tradeQueryParam;
+    memset(&tradeQueryParam,0,sizeof(struct XTPQueryTraderReq));
 
     jclass queryParamClass = env->GetObjectClass(queryParam);
     assert(queryParamClass != NULL);
@@ -438,6 +440,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryStructuredFund(J
     std::stringstream(char_sessionId)>> sessionId;
 
     XTPQueryStructuredFundInfoReq req;
+    memset(&req,0,sizeof(struct XTPQueryStructuredFundInfoReq));
 
     jclass queryParamClass = env->GetObjectClass(queryParam);
     assert(queryParamClass != NULL);
@@ -476,6 +479,7 @@ JNIEXPORT jstring JNICALL Java_com_zts_xtp_trade_api_TradeApi_fundTransfer(JNIEn
     std::stringstream(char_sessionId)>> sessionId;
 
     XTPFundTransferReq req;
+    memset(&req,0,sizeof(struct XTPFundTransferReq));
 
     jclass queryParamClass = env->GetObjectClass(fundTransfer);
     assert(queryParamClass != NULL);
@@ -525,6 +529,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryFundTransfer(JNI
     std::stringstream(char_sessionId)>> sessionId;
 
     XTPQueryFundTransferLogReq req;
+    memset(&req,0,sizeof(struct XTPQueryFundTransferLogReq));
 
     jclass queryParamClass = env->GetObjectClass(queryParam);
     assert(queryParamClass != NULL);
@@ -552,6 +557,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryETF(JNIEnv *env,
     std::stringstream(char_sessionId)>> sessionId;
 
     XTPQueryETFBaseReq req;
+    memset(&req,0,sizeof(struct XTPQueryETFBaseReq));
 
     jclass queryParamClass = env->GetObjectClass(queryParam);
     assert(queryParamClass != NULL);
@@ -566,7 +572,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryETF(JNIEnv *env,
     assert(jm_getTicker != NULL);
     jstring strTicker = (jstring)env->CallObjectMethod(queryParam, jm_getTicker);
     const char *char_ticker = NULL;
-    if (strTicker != NULL) 
+    if (strTicker != NULL)
     {
         char_ticker = env->GetStringUTFChars(strTicker, 0);
         strcpy(req.ticker, char_ticker);
@@ -593,6 +599,7 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryETFTickerBasket(
     std::stringstream(char_sessionId)>> sessionId;
 
     XTPQueryETFComponentReq req;
+    memset(&req,0,sizeof(struct XTPQueryETFComponentReq));
 
     jclass queryParamClass = env->GetObjectClass(queryParam);
     assert(queryParamClass != NULL);
@@ -652,6 +659,8 @@ JNIEXPORT jint JNICALL Java_com_zts_xtp_trade_api_TradeApi_queryOptionAuctionInf
     std::stringstream(char_sessionId)>> sessionId;
 
     XTPQueryOptionAuctionInfoReq req;
+    memset(&req,0,sizeof(struct XTPQueryOptionAuctionInfoReq));
+
     env->ReleaseStringUTFChars(strSessionId, char_sessionId);
     if(queryParam != NULL){
         jclass queryParamClass = env->GetObjectClass(queryParam);

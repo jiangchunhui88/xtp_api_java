@@ -24,9 +24,9 @@ public class QuoteApiTest {
         quoteApi.connect(client,"/var/log/zts/xtp");
 		quoteApi.setUDPBufferSize(512);
 
-//        int login_result = quoteApi.login("120.27.164.138",6002,"15001030","aI2p4TiG",1);
-//        int login_result = quoteApi.login("10.25.24.48",6661,"testshopt01","123456",1);
-                int login_result = quoteApi.login("10.25.24.48",6661,"testshopt02","123456",1);
+        int login_result = quoteApi.login("120.27.164.138",6002,"15001030","xxxxxx",1);
+//        int login_result = quoteApi.login("10.25.24.48",6661,"testshopt01tgt","123456",1);
+//        int login_result = quoteApi.login("10.25.24.48",6661,"testshopt02","123456",1);//期权
         Assert.assertEquals(login_result, 0);
     }
 
@@ -52,120 +52,120 @@ public class QuoteApiTest {
     @Test
     public void subscribeMarketData() {
         System.out.println("subscribeMarketData");
-        quoteApi.subscribeMarketData(new String[]{"20008025"},1,1);
+        quoteApi.subscribeMarketData(new String[]{"300498"},1,2);//20008025
     }
 
     @Test
     public void unSubscribeMarketData() {
         System.out.println("unSubscribeMarketData");
-        quoteApi.unSubscribeMarketData(new String[]{"11011077"},1,2);
+        quoteApi.unSubscribeMarketData(new String[]{"300498"},1,2);//11011077
     }
 
     @Test
     public void subscribeOrderBook() {
         System.out.println("subscribeOrderBook");
-        quoteApi.subscribeOrderBook(new String[]{"11011077"},1,1);
+        quoteApi.subscribeOrderBook(new String[]{"300498"},1,2);//11011077
     }
 
     @Test
     public void unSubscribeOrderBook() {
         System.out.println("unSubscribeOrderBook");
-        quoteApi.unSubscribeOrderBook(new String[]{"11011077"},1,0);
+        quoteApi.unSubscribeOrderBook(new String[]{"300498"},1,2);//11011077
     }
 
     @Test
     public void subscribeTickByTick() {
         System.out.println("subscribeTickByTick");
-        quoteApi.subscribeTickByTick(new String[]{"11011077"},1,1);
+        quoteApi.subscribeTickByTick(new String[]{"300498"},1,2);//11011077
     }
 
     @Test
     public void unSubscribeTickByTick() {
         System.out.println("unSubscribeTickByTick");
-        quoteApi.unSubscribeTickByTick(new String[]{"11011077"},1,0);
+        quoteApi.unSubscribeTickByTick(new String[]{"300498"},1,2);//11011077
     }
 
     @Test
     public void subscribeAllMarketData() {
         System.out.println("subscribeAllMarketData");
-        quoteApi.subscribeAllMarketData(3);
+        quoteApi.subscribeAllMarketData(2);
     }
 
     @Test
     public void unSubscribeAllMarketData() {
         System.out.println("unSubscribeAllMarketData");
-        quoteApi.unSubscribeAllMarketData(3);
+        quoteApi.unSubscribeAllMarketData(2);
     }
 
     @Test
     public void subscribeAllOrderBook() {
         System.out.println("subscribeAllOrderBook");
-        quoteApi.subscribeAllOrderBook(3);
+        quoteApi.subscribeAllOrderBook(2);
     }
 
     @Test
     public void unSubscribeAllOrderBook() {
         System.out.println("unSubscribeAllOrderBook");
-        quoteApi.unSubscribeAllOrderBook(3);
+        quoteApi.unSubscribeAllOrderBook(2);
     }
 
     @Test
     public void subscribeAllTickByTick() {
         System.out.println("subscribeAllTickByTick");
-        quoteApi.subscribeAllTickByTick(3);
+        quoteApi.subscribeAllTickByTick(2);
     }
 
     @Test
     public void unSubscribeAllTickByTick() {
         System.out.println("unSubscribeAllTickByTick");
-        quoteApi.unSubscribeAllTickByTick(3);
+        quoteApi.unSubscribeAllTickByTick(2);
     }
 
     @Test
     public void queryAllTickers() {
         System.out.println("queryAllTickers");
-        quoteApi.queryAllTickers(1);
+        quoteApi.queryAllTickers(2);
     }
 
     @Test
     public void queryTickersPriceInfo() {
         System.out.println("queryTickersPriceInfo");
-        quoteApi.queryTickersPriceInfo(new String[]{"11011077"},1,1);
+        quoteApi.queryTickersPriceInfo(new String[]{"300498"},1,2);//11011077
     }
 
     @Test
     public void subscribeAllOptionMarketData(){
         System.out.println("subscribeAllOptionMarketData");
-        quoteApi.subscribeAllOptionMarketData(3);
+        quoteApi.subscribeAllOptionMarketData(2);
     }
 
     @Test
     public void unSubscribeAllOptionMarketData(){
         System.out.println("unSubscribeAllOptionMarketData");
-        quoteApi.unSubscribeAllOptionMarketData(0);
+        quoteApi.unSubscribeAllOptionMarketData(2);
     }
 
     @Test
     public void subscribeAllOptionOrderBook(){
         System.out.println("subscribeAllOptionOrderBook");
-        quoteApi.subscribeAllOptionOrderBook(1);
+        quoteApi.subscribeAllOptionOrderBook(2);
     }
 
     @Test
     public void unSubscribeAllOptionOrderBook(){
         System.out.println("unSubscribeAllOptionOrderBook");
-        quoteApi.unSubscribeAllOptionOrderBook(0);
+        quoteApi.unSubscribeAllOptionOrderBook(2);
     }
 
     @Test
     public void subscribeAllOptionTickByTick(){
         System.out.println("subscribeAllOptionTickByTick");
-        quoteApi.subscribeAllOptionTickByTick(1);
+        quoteApi.subscribeAllOptionTickByTick(2);
     }
 
     @Test
     public void unSubscribeAllOptionTickByTick(){
         System.out.println("unSubscribeAllOptionTickByTick");
-        quoteApi.unSubscribeAllOptionTickByTick(0);
+        quoteApi.unSubscribeAllOptionTickByTick(2);
     }
 }
